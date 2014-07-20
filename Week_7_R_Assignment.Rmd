@@ -1,0 +1,70 @@
+---
+title: "Week_7_R_Assignment"
+author: "Adejare Windokun"
+date: "Thursday, July 17, 2014"
+output: html_document
+---
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+# Install the required package RSQLite (contains driver for SQLite)
+```{r}
+
+```
+
+#Load both the packages
+```{r}
+require(RSQLite)
+require(MASS)
+```
+Check to see if the Boston table is available
+```{r}
+head(Boston)
+```
+create the file path to the simplecharter database
+```{r}
+dbFile = "C:/Users/jare/SkyDrive/WorkDocs/CUNY/Data_Analytics/Data_Programming/Databases/simplecharter.sqlite"
+```
+
+use a variable to store the type of driver
+```{r}
+drv = "SQLite"
+```
+set the connection properties for the connection and store the connection in a connection object
+```{r}
+con = dbConnect(drv, dbFile)
+```
+list the tables in the connected database using the connection
+```{r}
+dbListTables(con)
+```
+
+read the data from one of the tables (allcharters) into a dataframe (myDataFrame)
+```{r}
+myDataFrame = dbReadTable(con, "allcharters")
+```
+Display the first few rows of the new dataframe
+```{r}
+head(myDataFrame)
+```
+write the data from Boston into the sqlite database
+
+```{r}
+dbWriteTable(con, "newBoston", Boston)
+```
+
+list the tables in the simplecharter database again
+```{r}
+dbListTables(con)
+```
+display the first 10 rows of the newBoston table
+```{r}
+dbReadTable(con, "newBoston")[1:10,]
+```
+close connection
+```{r}
+dbDisconnect(con)
+```
+
+
